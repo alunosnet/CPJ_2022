@@ -14,6 +14,12 @@ public class arco : MonoBehaviour
     [SerializeField] float AnguloX = 0;
     [SerializeField] float SensibilidadeX = 200f;
     GameObject FlechaADisparar;
+    [SerializeField] float ScaleFactor;
+    
+    private void Start()
+    {
+        ScaleFactor = 1 / transform.localScale.z;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -41,6 +47,9 @@ public class arco : MonoBehaviour
         {
             Forca += incForca * Time.deltaTime;
             if (Forca > MaxForca) Forca = MaxForca;
+            FlechaADisparar.transform.localScale =new Vector3(FlechaADisparar.transform.localScale.x, 
+                                                    FlechaADisparar.transform.localScale.y,
+                                                    ScaleFactor* Forca / MaxForca);
         }
         if (Input.GetButtonUp("Fire1")/* || Forca==MaxForca*/)
         {
