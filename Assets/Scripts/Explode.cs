@@ -6,29 +6,45 @@ public class Explode : MonoBehaviour
 {
     [SerializeField] float RaioExplosao=10.0f;
     [SerializeField] float ForcaExplosao=10.0f;
-
+    [SerializeField] bool TemTimer=false;
     [SerializeField] float TempoExplodir=-1f;
+    Rigidbody _rigidbody;
     //TODO: Dano da explosão em NPC, SOM, Efeitos de particulas
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        _rigidbody=GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(TemTimer)
+            TempoExplodir -= Time.deltaTime;        
+        if(TempoExplodir<=0)
+            Explodir();
     }
    private void OnTriggerEnter(Collider other){
-       Explodir();
+
+       if(TemTimer==false)
+            Explodir();
+        else
+            PararFlecha(other.gameObject);
    }
     private void OnCollisionEnter(Collision collision){
-        Explodir();
+        if(TemTimer==false)
+            Explodir();
+        else
+            PararFlecha(collision.gameObject);
+    }
+    void PararFlecha(GameObject obj){
+        _rigidbody.velocity=Vector3.zero;
+        _rigidbody.collisionDetectionMode=CollisionDetectionMode.ContinuousSpeculative;
+        _rigidbody.isKinematic=true;
+        transform.parent=obj.transform;
     }
     void Explodir(){
-        Debug.Log("BOOM");
         Vector3 posicaoExplosao=transform.position;
         Collider[] colliders=Physics.OverlapSphere(posicaoExplosao,RaioExplosao);
         foreach(Collider obj in colliders){
