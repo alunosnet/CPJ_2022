@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityStandardAssets.Utility;
 /// <summary>
 /// Arco que dispara flechas
 /// </summary>
@@ -15,10 +16,17 @@ public class arco : MonoBehaviour
     [SerializeField] float SensibilidadeX = 200f;
     GameObject FlechaADisparar;
     [SerializeField] float ScaleFactor;
-    
+    SmoothFollow camera;
+    [SerializeField] float VelocidadeAproxima = 1;
+    [SerializeField] float DistanciaCamera;
+    [SerializeField] float DistanciaMinimaCamera;
+    [SerializeField] float AlturaMinimaCamera;
     private void Start()
     {
         ScaleFactor = 1 / transform.localScale.z;
+        camera = FindObjectOfType<SmoothFollow>();
+        DistanciaCamera = camera.distance;
+        AlturaMinimaCamera = camera.height;
     }
     // Update is called once per frame
     void Update()
@@ -50,6 +58,12 @@ public class arco : MonoBehaviour
             FlechaADisparar.transform.localScale =new Vector3(FlechaADisparar.transform.localScale.x, 
                                                     FlechaADisparar.transform.localScale.y,
                                                     ScaleFactor* Forca / MaxForca);
+            //aproxima a camera
+            camera.distance -= VelocidadeAproxima * Time.deltaTime;
+            if (camera.distance < DistanciaMinimaCamera) camera.distance = DistanciaMinimaCamera;
+            //baixa a camera
+            camera.height -= VelocidadeAproxima * Time.deltaTime;
+            if (camera.height < 3) camera.height = 3;
         }
         if (Input.GetButtonUp("Fire1")/* || Forca==MaxForca*/)
         {
@@ -63,6 +77,8 @@ public class arco : MonoBehaviour
             FlechaADisparar.GetComponent<Rigidbody>().AddForce(Forca * transform.forward);
             Forca = 0;
             Carregar = false;
+            camera.distance = DistanciaCamera;
+            camera.height = AlturaMinimaCamera;
         }
     }
 }
