@@ -1,0 +1,12 @@
+Adicionar anims no player
+X Substituir o Rigidbody por um CharacterController
+Nível com armadilhas e npcs
+Contar o tempo para terminar nível
+O nível termina quando os npcs estão todos mortos e chegou a um determinado ponto
+Leader com dreamlo
+Aplicar o efeito Bloom nos inimigos
+Plataforma (elevador)
+NPCs a atacar o player
+Save dos níveis
+Spawn de npcs dentro de uma área
+http://dreamlo.com/lb/gkfb_AIkX0eoykmH3HCZaQhgJFx1S6rEuDld6iave2yA
